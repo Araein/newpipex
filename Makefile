@@ -14,14 +14,13 @@ CC				= gcc
 CFLAGS 			= -Wall -Wextra -Werror
 RM				= rm -f
 
+%.o: %.c
+				 @${CC}  ${CFLAGS} -I ${HEADER} -o $@ -c $< 
+
 all:			${NAME}
 
 $(NAME):		${OBJS}
-				gcc -o ${NAME} ${OBJS}
-
-%.o: %.c
-				@${CC} ${CFLAGS} -I ${HEADER} -o $@ -c $<
-
+				gcc -fsanitize=address -g3 -o ${NAME} ${OBJS}
 clean:
 				@${RM} ${OBJS} ${OUT}
 
@@ -31,3 +30,5 @@ fclean:			clean
 re:				fclean all
 
 .PHONY: 		all fclean clean re
+
+# -fsanitize=address -g3

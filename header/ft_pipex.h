@@ -17,7 +17,6 @@ typedef struct	s_pipex
 	char	*path;
 }				t_pipex;
 
-//void				pipex(char *format, int result, int i);
 char				*getmyline(char **env);
 char				**getpath(char *pro, char *goodline);
 void				execpro(char *argv, char **env, int fd, int dup, int pipefd[2]);
