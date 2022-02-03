@@ -27,3 +27,24 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	dest[i] = '\0';
 	return (dest);
 }
+
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+
+int	ft_putstr_fd(char const *s, int fd)
+{
+	int	i;
+
+	if (s)
+	{
+		i = 0;
+		while (s[i] != '\0')
+		{
+			ft_putchar_fd(s[i], fd);
+			i++;
+		}
+	}
+	return (1);
+}

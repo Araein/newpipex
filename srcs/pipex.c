@@ -37,8 +37,10 @@ char	*getpath(char *pro, char *goodline)
 		tmp = ft_strjoin(*paths, "/");
 		result = ft_strjoin(tmp, pro);
 		free(tmp);
-		if (access(result, F_OK) == 0)
+		if (access(result, X_OK) == 0)
+		{
 			return (result);
+		}
 		free(result);
 		paths++;
 	}		
@@ -69,7 +71,9 @@ void	execpro(char *argv, char **env, int fd, int dup, int pipefd[2])
 
 	if (!paths)
 	{
-		printf("command not found: %s\n", pro[0]);  //ajjouter zsh:   ?
+		ft_putstr_fd("zsh: command not found: ", 2);
+		ft_putstr_fd(pro[0], 2);
+		ft_putchar_fd('\n', 2); //ajjouter zsh:   ? essayer avec des tags qui existent pas
 		while (pro[i])
 		{
 			free(pro[i]);
