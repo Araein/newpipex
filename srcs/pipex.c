@@ -23,35 +23,40 @@ char	*getmyline(char **env)
 	}
 	return (NULL);
 }
-char	**getpath(char *pro, char *goodline)
+char	*getpath(char *pro, char *goodline)
 {
-	int	i;
 	char	**paths;
-	char	*tempostring;
+	char	*tmp;
+	char	*result;
+	char	**tempo;
 
-	i = -1;
-	paths = NULL;
-	tempostring = NULL;
 	paths = ft_split(goodline, ':');
-	while (paths[++i])
+	tempo = paths;
+	while (*paths)
 	{
-		tempostring = paths[i];
-		paths[i] = ft_strjoin(tempostring, "/");
-		free(tempostring);
-		tempostring = NULL;
-		tempostring = paths[i];
-		paths[i] = ft_strjoin(tempostring, pro);
-		free(tempostring);
-		tempostring = NULL;
-	}
-	return (paths);
+		tmp = ft_strjoin(*paths, "/");
+		result = ft_strjoin(tmp, pro);
+		free(tmp);
+		if (access(result, F_OK) == 0)
+			return (result);
+		free(result);
+		paths++;
+	}		
+	int i = 0;
+	while (tempo[i])
+		{
+			free(tempo[i]);
+			i++;
+		}
+	free(tempo);
+	return (NULL);
 }
 
 void	execpro(char *argv, char **env, int fd, int dup, int pipefd[2])
 {
 	int	i;
 	char	**pro;
-	char	**paths;
+	char	*paths;
 	int	j;
 
 	if (dup == 0)
@@ -61,15 +66,25 @@ void	execpro(char *argv, char **env, int fd, int dup, int pipefd[2])
 	i = 0;
 	pro = ft_split(argv, ' ');
 	paths = getpath(pro[0], getmyline(env));
+
+	if (!paths)
+	{
+		printf("command not found: %s\n", pro[0]);  //ajjouter zsh:   ?
+		while (pro[i])
+		{
+			free(pro[i]);
+			i++;
+		}
+		free(pro);
+		free(paths);
+		return ;
+	}
 	close (pipefd[dup]);
 	dup2(pipefd[j], j);
 	dup2(fd, dup);
 	close(fd);
-	while (paths[i])
-	{
-		execve(paths[i], pro, env);
-		i++;
-	}
+	execve(paths, pro, env); // env = ENV  // pro = commandeafaire // 
+
 	i = 0;
 	while (pro[i])
 	{
@@ -78,10 +93,6 @@ void	execpro(char *argv, char **env, int fd, int dup, int pipefd[2])
 	}
 	free(pro);
 	i = 0;
-	while (paths[i])
-	{
-		free(paths[i]);
-		i++;
-	}
+
 	free(paths);
 }

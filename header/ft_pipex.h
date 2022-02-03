@@ -18,7 +18,7 @@ typedef struct	s_pipex
 }				t_pipex;
 
 char				*getmyline(char **env);
-char				**getpath(char *pro, char *goodline);
+char				*getpath(char *pro, char *goodline);
 void				execpro(char *argv, char **env, int fd, int dup, int pipefd[2]);
 int				main(int argc, char **argv, char **env);
 size_t				ft_strlen(const char *s);
