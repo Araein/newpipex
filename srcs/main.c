@@ -71,5 +71,10 @@ int	main(int argc, char **argv, char **env)
 	return (0);
 }
 //utiliser perrorr
+//gerer les commandes pas executables (sudo par ex)
+// utiliser chmod
+//compiler avec CC pas GCC
+//check pipex tutorial
+//bien fermer tous les pipes
 // ./pipex infile "grep -o salut" "wc -l" outfile
 // < infile  grep -o salut | wc -l  > outfile
